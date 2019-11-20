@@ -31,12 +31,18 @@ if [ "$USUARIO_DB" != "root" ]; then
 	echo -n "MySQL " # PARA QUE SE ACOPLE AL PEDIDO DE PASSWORD DEL COMANDO MYSQLDUMP
 fi
 
+echo -n "Host (default 127.0.0.1): "
+read HOST
+if [ ! -z $HOST ]; then
+	HOST="-h $HOST"
+fi
+
 if command -v gzip > /dev/null; then
 	MYSQLFILE="./$NOMBRE_DB.sql.gz"
-	mysqldump $USUARIO_COMMAND --no-create-db --routines --skip-comments --add-drop-table $NOMBRE_DB | sed -E 's/DEFINER=`[^`]+`@`[^`]+`/DEFINER=CURRENT_USER/g' | gzip > $MYSQLFILE
+	mysqldump $USUARIO_COMMAND $HOST --no-create-db --routines --skip-comments --add-drop-table $NOMBRE_DB | sed -E 's/DEFINER=`[^`]+`@`[^`]+`/DEFINER=CURRENT_USER/g' | gzip > $MYSQLFILE
 else
 	MYSQLFILE="./$NOMBRE_DB.sql"
-	mysqldump $USUARIO_COMMAND --no-create-db --routines --skip-comments --add-drop-table $NOMBRE_DB | sed -E 's/DEFINER=`[^`]+`@`[^`]+`/DEFINER=CURRENT_USER/g' > $MYSQLFILE
+	mysqldump $USUARIO_COMMAND $HOST --no-create-db --routines --skip-comments --add-drop-table $NOMBRE_DB | sed -E 's/DEFINER=`[^`]+`@`[^`]+`/DEFINER=CURRENT_USER/g' > $MYSQLFILE
 fi
 
 if [ ! -f $MYSQLFILE ] || [ ! -s $MYSQLFILE ]; then
