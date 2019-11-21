@@ -35,13 +35,19 @@ fi
 echo -n "Nombre de la DB: "
 read NOMBRE_DB
 
+echo -n "Host (default 127.0.0.1): "
+read HOST
+if [ ! -z $HOST ]; then
+	HOST="-h $HOST"
+fi
+
 if [ "$USUARIO_DB" != "root" ]; then
 	echo -n "MySQL " # PARA QUE SE ACOPLE AL PEDIDO DE PASSWORD DEL COMANDO MYSQLDUMP
 fi
 
 if command -v gunzip > /dev/null && (echo "$ARCHIVO_DB" | grep ".gz$" > /dev/null); then
-	gunzip < "$ARCHIVO_DB" | mysql $USUARIO_COMMAND $NOMBRE_DB && echo "Base de datos $ARCHIVO_DB importada en $NOMBRE_DB"
+	gunzip < "$ARCHIVO_DB" | mysql $USUARIO_COMMAND $HOST $NOMBRE_DB && echo "Base de datos $ARCHIVO_DB importada en $NOMBRE_DB"
 else
-	mysql $USUARIO_COMMAND $NOMBRE_DB && echo "Base de datos $ARCHIVO_DB importada en $NOMBRE_DB"
+	mysql $USUARIO_COMMAND $HOST $NOMBRE_DB && echo "Base de datos $ARCHIVO_DB importada en $NOMBRE_DB"
 fi
 
