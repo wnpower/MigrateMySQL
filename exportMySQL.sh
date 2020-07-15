@@ -55,7 +55,7 @@ echo "Base de datos $NOMBRE_DB exportada en $MYSQLFILE."
 
 # TRANSFERENCIA
 
-echo -n "¿Quieres transferir el export a un servidor remoto? [s/n] (Default s): "
+echo -n "¿Quieres transferir el export a un servidor remoto? [s/n]: "
 read TRANSFER
 
 if [ "$TRANSFER" = "n" ] || [ -z $TRANSFER ]; then
