@@ -37,6 +37,7 @@ if [ ! -z $HOST ]; then
 	HOST="-h $HOST"
 fi
 
+echo "Exportando base $NOMBRE_DB..."
 if command -v gzip > /dev/null; then
 	MYSQLFILE="./$NOMBRE_DB.sql.gz"
 	mysqldump $USUARIO_COMMAND $HOST --no-create-db --routines --skip-comments --add-drop-table $NOMBRE_DB | sed -E 's/DEFINER=`[^`]+`@`[^`]+`/DEFINER=CURRENT_USER/g' | gzip > $MYSQLFILE
@@ -55,10 +56,12 @@ echo "Base de datos $NOMBRE_DB exportada en $MYSQLFILE."
 
 # TRANSFERENCIA
 
-echo -n "¿Quieres transferir el export a un servidor remoto? [s/n]: "
-read TRANSFER
+while [ -z $TRANSFER ]; do
+    echo -n "¿Quieres transferir el export a un servidor remoto? [s/n]: "
+    read TRANSFER
+done
 
-if [ "$TRANSFER" = "n" ] || [ -z $TRANSFER ]; then
+if [ "$TRANSFER" = "n" ] || [ $TRANSFER = "N" ]; then
 	echo "No se tranfiere"
 	exit 0
 fi
