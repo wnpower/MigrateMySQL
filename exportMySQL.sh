@@ -83,10 +83,10 @@ if [ -z $PUERTO_SSH ]; then
 	PUERTO_SSH=22
 fi
 
-echo -n "Path remoto (default ~): "
+echo -n "Path remoto (default: home del usuario): "
 read PATH_REMOTO
 if [ -z $PATH_REMOTO ]; then
-	PATH_REMOTO="~"
+	PATH_REMOTO=""
 fi
 
 echo "Tranfiriendo archivo $MYSQLFILE a $HOST_REMOTO..."
